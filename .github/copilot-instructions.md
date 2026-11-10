@@ -1,133 +1,221 @@
-# OpenFarm - Copilot Instructions
+# AgriTech Africa - Copilot Instructions
 
-## Architecture Overview
+## Project identity
 
-OpenFarm is an open, modular field intelligence platform built on a **3-layer strategic architecture** (see `ARCHITECTURE.md`):
+This repository is being transformed from OpenFarm into **AgriTech Africa**.
 
-- **Layer A - Observation Infrastructure** (Data Gravity): satellite imagery, weather, soil profiles, field boundaries, sensors
-- **Layer B - Intelligence Engine** (Moat): anomaly detection, stress signals, risk models, explainability
-- **Layer C - Delivery Surfaces** (Distribution): map UI, reports, API, scouting, integrations
+- **Target users:** African crop farmers, starting with Nigeria
+- **Product direction:** A simple, farmer-facing agricultural platform powered by advanced agricultural intelligence
+- **Primary product goal:** Turn satellite, weather, soil and field data into practical, understandable and trustworthy farming guidance
+- **Current product baseline:** Existing OpenFarm functionality must remain available unless a change is explicitly approved
 
-### Tech Stack
+AgriTech Africa is not only a technical monitoring system. Features should be designed for farmers with limited digital experience, limited connectivity and limited time.
 
-- **`apps/web/`** - Next.js 14 + NextAuth (Google OAuth) + Tailwind + shadcn/ui + MapLibre + ECharts
-- **`services/api/`** - FastAPI + SQLAlchemy 2.0 (async) + Alembic + Pydantic v2
-- **`services/tiler/`** - TiTiler (COG tile server) with shared JWT auth
-- **Infrastructure** - PostgreSQL 16 + PostGIS 3.4, Redis 7 (Celery broker), MinIO (S3-compatible), Docker Compose
+## Existing architecture
 
-**Critical rule:** Next.js talks to Postgres **only** for user upsert during NextAuth auth callback (`src/lib/db.ts`). All other data flows through the FastAPI API via `src/lib/api.ts`.
+Preserve the current service boundaries unless a documented architectural reason justifies a change.
 
-## Auth Flow
+- **Frontend:** `apps/web/`, Next.js 14, React, TypeScript, Tailwind, shadcn/ui, NextAuth, next-intl, MapLibre GL and ECharts
+- **Backend API:** `services/api/`, FastAPI, Python, SQLAlchemy 2.0, Pydantic and Alembic
+- **Database:** PostgreSQL with PostGIS for transactional, spatial and geospatial data
+- **Background processing:** Redis and Celery workers in `services/api/app/tasks/`
+- **Object storage:** MinIO for raster COGs, model files, basemaps and scouting photos
+- **Raster visualization:** MapLibre in the web client and TiTiler in `services/tiler/`
+- **Deployment:** Docker Compose, Caddy and optional Terraform deployment
 
-1. User signs in via Google OAuth (NextAuth) → `upsertUser()` in `lib/db.ts` creates user + default org directly in Postgres
-2. Client calls `POST /api/auth/token` to mint a short-lived API JWT (HS256, 1hr TTL, shared `OPENFARM_JWT_SECRET`)
-3. `apiFetch()` in `lib/api.ts` auto-manages JWT caching/re-minting and injects `Authorization` + `X-Org-Id` headers
-4. API routes use `get_current_user` (JWT validation) and `get_org_context` (org membership check via `X-Org-Id` header) as FastAPI dependencies
-5. RBAC via `require_roles("owner", "admin", ...)` dependency factory in `middleware/auth.py`
+The current data and processing layers are:
 
-## API Conventions
+- **Observation:** Sentinel-2 imagery, Open-Meteo weather, SoilGrids or POLARIS soil data, field geometries and scouting observations
+- **Intelligence:** Vegetation indices, alerts, soil-derived risk scores, crop suitability and weather-soil stress
+- **Delivery:** Maps, charts, dashboards, reports, API responses, scouting tools and share links
 
-- All endpoints prefixed with `/v1` - routers in `services/api/app/routers/`
-- Org-scoped resources require `X-Org-Id` header; validated by `get_org_context` dependency
-- Pagination uses `PaginatedResponse[T]` envelope: `{ items, total, limit, offset }` (see `schemas/common.py`)
-- Soft-delete pattern: `deleted_at` timestamp column, filter with `.where(Model.deleted_at.is_(None))`
-- All org-scoped tables have denormalized `org_id` column for tenant isolation
-- Geometry stored as `MultiPolygon(4326)` - auto-wrap `Polygon` to `MultiPolygon` in `_geojson_to_multi()` helper
-- Schemas in `schemas/` use `model_config = {"from_attributes": True}` for ORM → Pydantic conversion
-- Audit events created on significant actions (field_created, etc.) per PRD Section 5.1
+### Critical data-flow rules
 
-## Database & Migrations
+1. Next.js communicates with the FastAPI API for application data.
+2. The Next.js server connects directly to PostgreSQL only for the existing NextAuth user-upsert flow in `apps/web/src/lib/db.ts`.
+3. API requests use the versioned `/v1` routes and include JWT authentication plus `X-Org-Id` for organization-scoped resources.
+4. Long-running work must use Celery and Redis rather than blocking API requests.
+5. Raster processing follows the existing pattern: STAC search, band reads, index computation, COG creation, MinIO storage, zonal statistics and TiTiler rendering.
+6. Celery tasks use the synchronous database session. FastAPI request handlers use the asynchronous database session.
 
-- ORM models in `services/api/app/models/tables.py` - all tables use UUID PKs with `server_default=uuid_generate_v4()`
-- Async engine (`asyncpg`) for FastAPI in `core/database.py`; sync engine (`psycopg2`) for Celery in `core/database_sync.py`
-- Migrations: `cd services/api && alembic revision --autogenerate -m "desc" && alembic upgrade head`
-- Auto-runs `alembic upgrade head` on API startup
+## Engineering standards
 
-## Celery / Background Jobs
+### Preserve compatibility
 
-- Worker config in `services/api/app/worker.py` - broker=Redis, JSON serialization, 30min hard timeout
-- Tasks in `services/api/app/tasks/` - `ndvi.py` (vegetation indices), `soil.py` (soil profile ingestion), `weather.py` (weather data), `backfill.py` (historical index backfill)
-- Celery workers use sync SQLAlchemy sessions (`core/database_sync.py`), not async
-- Vegetation pipeline: STAC search → download bands → compute index (NDVI/EVI/SAVI/NDWI) → write COG to MinIO → zonal stats → alert evaluation
-- Soil pipeline: SoilGrids WCS (global) or POLARIS S3 (US) → 10 properties × 6 depths → texture classification → risk scoring → field summary
-- Weather pipeline: Open-Meteo API → 18 variables + 5 derived indices (GDD, ET₀, water balance, drought) → daily upsert
-- Job progress tracked via `jobs.progress_json` JSONB column with per-step status updates
+- Preserve the existing architecture and conventions unless a documented reason justifies a change.
+- Do not remove existing features, endpoints, data or workflows without explicit approval.
+- Maintain API compatibility. Prefer additive, backward-compatible changes.
+- If a breaking change is unavoidable, document the affected contracts, migration path, rollout order and rollback plan before implementation.
+- Keep existing organization, farm, field, monitoring, weather, soil, scouting, alert and sharing behavior working while new capabilities are introduced.
 
-## Writing Style (strict)
+### Database and migrations
 
-Applies to docs, comments, UI strings, commit messages, and script output:
+- Use Alembic migrations for every database schema change.
+- Do not edit an existing migration that may already have been applied. Add a new migration instead.
+- Keep ORM models, Pydantic schemas, migrations and API responses consistent.
+- Preserve UUID identifiers, PostGIS geometry conventions and existing soft-delete behavior.
+- Keep `org_id` on organization-scoped data and enforce tenant filters in every relevant query.
+- Consider indexes, foreign keys, migration safety, data backfill and rollback implications before changing the schema.
 
-- No em-dashes (use hyphens, commas, or restructure)
-- No emojis or decorative unicode symbols anywhere
-- No AI-filler phrasing ("seamless", "leverage", "delve", "robust", "empower", and similar)
-- UI icons come exclusively from lucide-react; never emoji or unicode symbols as icons
+### API and background jobs
 
-## Design system (UI work)
+- Keep API routes under `/v1`.
+- Use existing authentication and RBAC dependencies rather than creating parallel authorization logic.
+- Preserve the existing pagination envelope: `{ items, total, limit, offset }`.
+- Return explicit errors using repository conventions. Do not silently convert failures into successful-looking responses.
+- Make background tasks idempotent where possible.
+- Record meaningful job progress and failure details for long-running work.
+- Validate external responses before storing them.
+- Preserve provenance, source, date, quality and confidence metadata for derived agricultural data.
 
-Read `DESIGN.md` at the repo root before touching any UI. Never write a raw colour, font size, spacing value, or icon size that is not in the token layer of `apps/web/src/app/globals.css`. Severity uses `sev-*`, measured quantities use their permanent `sig-*` colour, charts use `--viz-1..8`. Visual reference: `docs/design/OpenFarm Design System.dc.html`.
+### Testing and validation
 
-## Frontend Patterns
+- Add focused tests for new functionality and bug fixes.
+- Cover authorization, tenant isolation, invalid input, missing data and provider failures where applicable.
+- Run the smallest relevant lint, type-check, test, migration or build commands before considering work complete.
+- Validate measurable requirements directly, not through a proxy.
+- Do not claim a feature is implemented unless it exists in the source code and has been tested or otherwise verified.
+- Report incomplete, blocked or unverified work plainly.
 
-- **i18n**: `next-intl` with `en`/`es` locales; messages in `apps/web/messages/`. Routes use `[locale]` segment with `localePrefix: "as-needed"`
-- **UI components**: shadcn/ui in `src/components/ui/` (Radix primitives + Tailwind + `class-variance-authority`)
-- **Org context**: `OrgProvider` + `useOrg()` hook in `org-context.tsx` manages org switching; org ID stored in `localStorage`
-- **Map**: MapLibre GL JS via `BaseMap` and `DrawMap` components; PMTiles protocol for basemap tiles with OSM fallback
-- **Charts**: Apache ECharts via `echarts-for-react` (see `components/charts/ndvi-chart.tsx`)
-- **State/fetching**: SWR for data fetching; API client in `lib/api.ts` exposes namespaced helpers (e.g., `farmsApi.list()`, `fieldsApi.create()`)
-- **Auth pages**: `(authenticated)/layout.tsx` checks session server-side → redirects unauthenticated users. `AppShell` wraps authenticated pages with `OrgProvider` + `Sidebar`
+## Product principles
 
-## Development Commands
+- **Mobile-first:** Design workflows for phones before desktop enhancement.
+- **Simple language:** Use clear, short wording. Avoid unexplained technical or agronomic jargon.
+- **Farmer accessibility:** Assume users may have limited digital experience, small screens and intermittent connectivity.
+- **Low bandwidth:** Minimize payloads, unnecessary map tiles, large images and repeated requests. Support useful summaries when full visualizations are unavailable.
+- **Localization:** Support English and Hausa as first-class locales. Do not hard-code user-facing text. Use the existing `next-intl` message and routing patterns.
+- **Practical recommendations:** Prefer clear next actions, timing, reasons and limitations over raw data displays.
+- **Trust:** Make it clear what is observed, what is estimated and what is recommended.
+- **Progressive complexity:** Give farmers simple conclusions first, with detailed evidence available for agronomists and advanced users.
 
-```bash
-# Full stack (Docker - dev mode with localhost ports)
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+When adding a user-facing feature, consider:
 
-# API only (local dev)
-cd services/api && pip install -e ".[dev]" && uvicorn app.main:app --reload --port 8000
+1. Can a farmer understand the result without technical training?
+2. Can the workflow complete on a low-end phone?
+3. What happens when connectivity or external data is unavailable?
+4. Is the recommended action practical for the farmer's location and resources?
+5. Can the user see why the recommendation was made?
 
-# Web only (local dev)
-cd apps/web && npm install && npm run dev
+## Agricultural principles
 
-# Database migration
-cd services/api && alembic revision --autogenerate -m "description" && alembic upgrade head
+### Evidence and uncertainty
 
-# Health checks
-curl http://localhost:8000/healthz   # API
-curl http://localhost:3000/api/health # Web
-```
+- Do not present satellite estimates, interpolated weather, model outputs or soil maps as ground truth.
+- Distinguish field observations, laboratory measurements, remote-sensing estimates and model-derived values.
+- Include data source, observation or model date, spatial resolution and confidence or quality information where applicable.
+- Preserve uncertainty rather than replacing it with false precision.
+- Use clear disclaimers for regional estimates, especially SoilGrids-derived values.
 
-## Key Files Reference
+### Nigerian and African agronomy
+
+- Do not invent Nigerian agricultural recommendations, crop calendars, local-language terminology or agronomic thresholds.
+- Do not generalize recommendations from United States, European or global datasets without documenting the limitation.
+- Important recommendations must receive appropriate validation from qualified agronomists, agricultural extension specialists or reliable local evidence before being presented as guidance.
+- Treat crop suitability as decision support, not a guaranteed yield, profitability or prescription.
+- Consider local agroecological zones, crop varieties, planting windows, rainfall patterns, irrigation access, soil fertility, pests, disease, labor, input access and farmer objectives.
+- Keep assumptions and limiting factors visible to users.
+
+### Earth observation integrations
+
+- The existing satellite analytics pipeline uses ESA/Copernicus Sentinel-2 data accessed through the Element84 Earth Search STAC API.
+- Do not describe the existing Sentinel-2 integration as a NASA integration.
+- NASA integrations, such as NASA POWER, SMAP or MODIS, must remain separate from Sentinel-2 integrations until they are explicitly implemented, tested, attributed and verified.
+- Do not add NASA data sources by assumption. Document the provider, licensing, variables, resolution, refresh behavior, failure modes and validation plan first.
+- Keep satellite source, scene date, cloud or quality metadata and processing provenance attached to derived outputs.
+
+## Security principles
+
+- Never use default, placeholder or known production secrets.
+- Production services must fail safely when required secrets are missing or invalid.
+- Enforce tenant isolation on every organization-scoped read, write, job and storage operation.
+- Use the existing JWT and organization-membership dependencies unless a replacement is documented and reviewed.
+- Enforce role-based permissions consistently. A UI restriction is not a security control.
+- Validate uploaded files by declared type, actual content, size, extension and storage destination. Consider malware scanning, image decoding and metadata removal for farmer photos.
+- Protect farmer information, field locations, photos, contact details and operational data from unintended public exposure.
+- Review share-link scope, expiration, revocation and returned fields before changing public report behavior.
+- Do not expose secrets, tokens, database errors, provider credentials or sensitive identifiers in logs or error responses.
+- Treat JWTs in URLs, public object paths and presigned URLs as sensitive.
+- Use rate limits and abuse protection for authentication, invitations, uploads, public links and expensive processing jobs.
+- Do not weaken existing authorization or storage policies to simplify development.
+
+## Copilot working rules
+
+1. Inspect relevant existing code, schemas, routes, migrations, tests and documentation before changing anything.
+2. Search for existing helpers, patterns and call sites before adding new logic.
+3. Avoid unnecessary rewrites, broad refactors and duplicate implementations.
+4. Do not remove existing functionality without explicit approval.
+5. Break large tasks into small, reviewable and independently verifiable changes.
+6. Explain database, API, security and architectural implications before major changes.
+7. Keep changes surgical and limited to the approved scope.
+8. Update directly related documentation when behavior, configuration or operational procedures change.
+9. Preserve existing naming, formatting, localization, logging and error-handling conventions.
+10. Prefer explicit validation and typed guards over broad exception handling, unsafe casts or silent fallbacks.
+11. Do not install or upgrade dependencies unless the task explicitly requires it or a documented validation failure proves it is necessary.
+12. Do not modify application source code, schemas, dependencies or infrastructure when the task is documentation-only.
+13. Never claim a feature is implemented unless it exists, the relevant contracts are updated and the behavior has been tested or verified.
+14. State uncertainty and blocked work clearly instead of making assumptions.
+
+## Frontend conventions
+
+- Read `DESIGN.md` before UI changes.
+- Use the existing design tokens in `apps/web/src/app/globals.css`; do not introduce arbitrary colors, font sizes or spacing values.
+- Use `next-intl` for user-facing text. English and Hausa messages belong in `apps/web/messages/`.
+- Use the existing API client in `apps/web/src/lib/api.ts` for API requests.
+- Use `OrgProvider` and `useOrg()` for organization context.
+- Use MapLibre, the existing map components and PMTiles conventions for geospatial views.
+- Use ECharts through the existing chart components for time-series visualizations.
+- Use Lucide icons rather than emoji or decorative Unicode symbols.
+- Preserve accessibility, keyboard navigation, loading states, empty states and error states.
+
+## Backend conventions
+
+- Put request-time API logic in routers and reusable domain logic in appropriate core modules.
+- Put long-running provider calls and processing in Celery tasks.
+- Use Pydantic schemas for request and response contracts.
+- Use structured logging with identifiers that help trace organization, user, field and job activity without exposing sensitive data.
+- Use soft deletion where the existing model uses `deleted_at`.
+- Add audit events for significant organization, permission, field, sharing and data-management actions.
+- Keep external provider calls bounded by timeouts and explicit failure handling.
+
+## Writing style
+
+Applies to documentation, comments, UI strings, commit messages and script output:
+
+- Use concise, direct language.
+- Do not use em dashes.
+- Do not use emojis or decorative Unicode symbols.
+- Avoid unexplained technical jargon.
+- Avoid AI-filler wording such as "seamless", "leverage", "delve", "robust" and "empower".
+- Explain limitations and uncertainty in plain language.
+
+## Key references
 
 | Purpose | Path |
 |---|---|
-| API entry + routers | `services/api/app/main.py` |
-| Auth dependencies | `services/api/app/middleware/auth.py` |
-| ORM models (all tables) | `services/api/app/models/tables.py` |
-| Pydantic schemas | `services/api/app/schemas/` |
-| NDVI processing pipeline | `services/api/app/tasks/ndvi.py` |
-| Config (pydantic-settings) | `services/api/app/core/config.py` |
-| Frontend API client | `apps/web/src/lib/api.ts` |
-| NextAuth + user upsert | `apps/web/src/lib/auth.ts`, `apps/web/src/lib/db.ts` |
-| Org context provider | `apps/web/src/components/org-context.tsx` |
-| i18n routing config | `apps/web/src/i18n/routing.ts` |
-| Docker Compose (base services) | `docker-compose.yml` |
-| Dev port overrides | `docker-compose.dev.yml` |
-| Prod overrides (Caddy, limits) | `docker-compose.prod.yml` |
 | Strategic architecture | `ARCHITECTURE.md` |
-| PRD (full product spec) | `docs/openfarm.md` |
+| Product overview and current features | `README.md` |
+| Roadmap and known future work | `ROADMAP.md` |
+| Security policy | `SECURITY.md` |
+| Deployment and operations | `DEPLOYMENT.md` |
+| API entry point | `services/api/app/main.py` |
+| Auth and RBAC dependencies | `services/api/app/middleware/auth.py` |
+| ORM models | `services/api/app/models/tables.py` |
+| Soil intelligence | `services/api/app/core/soil_intelligence.py` |
+| Satellite pipeline | `services/api/app/tasks/pipeline.py` |
+| Vegetation index registry | `services/api/app/tasks/indices.py` |
+| Weather processing | `services/api/app/tasks/weather.py` |
+| Soil ingestion | `services/api/app/tasks/soil.py` |
+| Frontend API client | `apps/web/src/lib/api.ts` |
+| NextAuth configuration | `apps/web/src/lib/auth.ts` |
+| Database user upsert | `apps/web/src/lib/db.ts` |
+| Docker services | `docker-compose.yml` |
 
-## Changelog Guidelines
+## Changelog guidance
 
-`CHANGELOG.md` is rendered in-app at `/changelog` for end users. The parser (`parseChangelog` in `changelog/page.tsx`) only supports these constructs:
+`CHANGELOG.md` is rendered in the application. Follow the existing parser format:
 
-- `## [version] - YYYY-MM-DD` - version header
-- `### Added` / `### Fixed` / `### Changed` / `### Security` / `### Deprecated` / `### Removed` - section badges
-- `- plain text item` - list items rendered as **plain text** (no markdown processing)
+- `## [version] - YYYY-MM-DD`
+- `### Added`, `### Fixed`, `### Changed`, `### Security`, `### Deprecated` or `### Removed`
+- Plain-text list items
 
-**Rules for writing changelog entries:**
-
-1. Items are output as raw text in `<li>` tags - `**bold**`, `` `backticks` ``, and `[links](url)` will display literally, not formatted. Do not use any inline markdown.
-2. Write for non-technical users: describe what features do, not how they are built.
-3. Do not include internal file paths, migration names, function names, API endpoint paths, or config keys.
-4. Keep items as clean, descriptive sentences. Match the style of existing entries (e.g., v0.1.0).
-5. Use the section headings that map to badge colors: Added (green), Fixed (blue), Changed (yellow), Security (red), Deprecated (orange), Removed (gray).
+Write changelog entries for non-technical users. Describe what changed for farmers, not internal file paths, migration names, function names, API routes or configuration keys.
