@@ -171,7 +171,7 @@ export function Sidebar() {
                             <div className="flex items-center gap-2">
                                 <Leaf className="h-7 w-7 shrink-0 text-primary" />
                                 <span className="text-lg font-bold tracking-tight whitespace-nowrap">
-                                    OpenFarm
+                                    AgriTech Africa
                                 </span>
                             </div>
                         )}
@@ -433,7 +433,7 @@ function MobileSidebar({
         <div className="flex h-full flex-col">
             <div className="flex items-center gap-2 px-4 py-5">
                 <Leaf className="h-7 w-7 text-primary" />
-                <span className="text-lg font-bold tracking-tight">OpenFarm</span>
+                <span className="text-lg font-bold tracking-tight">AgriTech Africa</span>
             </div>
             <Separator />
             <div className="px-3 py-3">

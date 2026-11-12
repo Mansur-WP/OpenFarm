@@ -4,10 +4,10 @@
         "signOut": "Cerrar sesión",
         "getStarted": "Comenzar",
         "github": "GitHub",
-        "builtWith": "Hecho con OpenFarm",
+        "builtWith": "Hecho con AgriTech Africa",
         "dashboard": "Panel",
         "welcomeBack": "Bienvenido de nuevo",
-        "signInDesc": "Inicia sesión para acceder a tus fincas y campos",
+        "signInDesc": "Inicia sesión en AgriTech Africa para acceder a tus fincas y campos",
         "signInWithGoogle": "Iniciar sesión con Google",
         "termsNotice": "Al iniciar sesión, aceptas nuestros términos de servicio.",
         "toggleTheme": "Cambiar tema",
@@ -37,15 +37,42 @@
         "cancel": "Cancelar"
     },
     "landing": {
-        "badge": "Código abierto · BSD-3-Clause · autoalojable",
-        "heroTitle1": "Sabe qué está pasando en tu campo -",
-        "heroTitle2": "y por qué",
-        "heroDesc": "OpenFarm es una plataforma de inteligencia de cultivos de código abierto: imágenes Sentinel-2, clima, suelo y tiempo fusionados en una imagen explicable de cada campo que gestionas, con la observación, su magnitud, su ventana y las condiciones detrás de ella.",
-        "deployCta": "Despliega el tuyo",
-        "demoCta": "Prueba la demo en vivo",
-        "navHow": "Cómo funciona",
-        "navArchitecture": "Arquitectura",
-        "navSelfHost": "Autoalojamiento",
+        "badge": "Herramientas para mejores decisiones agrícolas",
+        "heroTitle": "Toma mejores decisiones para tu cultivo.",
+        "heroDesc": "AgriTech Africa ayuda a los agricultores a conocer sus fincas, vigilar el estado de sus campos y tomar decisiones informadas usando datos agrícolas.",
+        "getStarted": "Comenzar",
+        "navHome": "Inicio",
+        "navAbout": "Acerca de",
+        "navFeatures": "Funciones",
+        "visualTitle": "Tu finca de un vistazo",
+        "visualDesc": "Información sencilla para ayudarte a planificar tu próximo paso.",
+        "visualCardTitle": "Estado del campo",
+        "visualCardDesc": "Mira qué ocurre en tus campos y observa los cambios con el tiempo.",
+        "aboutTag": "Acerca de AgriTech Africa",
+        "aboutTitle": "Información agrícola, más fácil de usar.",
+        "aboutDesc": "AgriTech Africa reúne información útil de tu finca en un solo lugar, para que pases menos tiempo adivinando y más tiempo cuidando tus cultivos.",
+        "featuresTag": "Qué hace AgriTech Africa",
+        "featuresTitle": "Conoce tu finca. Planifica con confianza.",
+        "featuresDesc": "Obtén información clara sobre tu finca y tus campos sin necesidad de ser un experto en tecnología.",
+        "feature_monitoring_title": "Seguimiento de fincas y campos",
+        "feature_monitoring_desc": "Organiza tus fincas y campos y consulta su estado en una vista sencilla.",
+        "feature_weather_title": "Información meteorológica",
+        "feature_weather_desc": "Consulta las condiciones que pueden ayudarte a planificar el trabajo y proteger tus cultivos.",
+        "feature_soil_title": "Información del suelo",
+        "feature_soil_desc": "Conoce datos importantes del suelo para tomar mejores decisiones sobre cultivos y campos.",
+        "feature_crops_title": "Aptitud de cultivos",
+        "feature_crops_desc": "Explora qué cultivos pueden adaptarse a tu campo según su suelo y sus condiciones locales.",
+        "howTag": "Cómo funciona",
+        "howTitle": "Empieza en tres pasos sencillos.",
+        "step1Title": "Crea tu cuenta",
+        "step1Desc": "Inicia sesión para crear tu cuenta de AgriTech Africa.",
+        "step2Title": "Añade tu finca y tus campos",
+        "step2Desc": "Cuéntanos sobre tu finca y añade los campos que quieres vigilar.",
+        "step3Title": "Explora información útil",
+        "step3Desc": "Usa información clara de tu finca para apoyar tus decisiones diarias.",
+        "ctaTitle": "¿Listo para comenzar?",
+        "ctaDesc": "Reúne la información de tu finca y da el siguiente paso con AgriTech Africa.",
+        "footerTagline": "Ayudando a los agricultores a tomar decisiones informadas",
         "cardField": "Bloque A1 · 12.40 ha · arroz",
         "cardDate": "8 feb 2026",
         "cardSeverity": "Alta",
@@ -121,22 +148,22 @@
         "statLicense": "sin límite de usuarios",
         "thanksTag": "Agradecimientos",
         "thanksTitle": "Construido sobre el trabajo de otros",
-        "thanksDesc": "OpenFarm es una capa fina sobre décadas de código y datos abiertos. Estos proyectos hacen lo difícil, cualquiera puede usarlos gratis, y alojar OpenFarm por tu cuenta también se apoya en su trabajo.",
+        "thanksDesc": "AgriTech Africa es una capa fina sobre décadas de código y datos abiertos. Estos proyectos hacen lo difícil, cualquiera puede usarlos gratis, y alojar esta plataforma por tu cuenta también se apoya en su trabajo.",
         "thanksDataLabel": "Datos e imágenes",
         "thanksAlsoLabel": "También construido con",
         "thanksHostingLabel": "Alojamiento de la demo",
-        "thanksHostingDesc": "ejecuta openfarm.earth en una instancia Ampere Always Free, los mismos 2 OCPU y 12 GB que cualquiera puede solicitar.",
+        "thanksHostingDesc": "ejecuta la demo en vivo en una instancia Ampere Always Free, los mismos 2 OCPU y 12 GB que cualquiera puede solicitar.",
         "navFaq": "Preguntas"
     },
     "signInPage": {
         "welcomeBack": "Bienvenido de nuevo",
-        "desc": "Inicia sesión en tu cuenta para continuar",
+        "desc": "Inicia sesión en AgriTech Africa para continuar",
         "withGoogle": "Iniciar sesión con Google",
         "terms": "Al iniciar sesión, aceptas nuestros Términos de Servicio y Política de Privacidad."
     },
     "dashboard": {
         "title": "Panel",
-        "welcomeTo": "Bienvenido a {orgName}",
+        "welcomeTo": "Bienvenido a AgriTech Africa · {orgName}",
         "farms": "Fincas",
         "fields": "Campos",
         "members": "Miembros",
@@ -534,7 +561,7 @@
     },
     "shareReport": {
         "fieldHealthReport": "Reporte de salud del campo",
-        "poweredBy": "Impulsado por OpenFarm",
+        "poweredBy": "Impulsado por AgriTech Africa",
         "fieldBoundary": "Límite del campo",
         "fieldInfo": "Información del campo",
         "area": "Área",
@@ -578,7 +605,7 @@
     },
     "changelog": {
         "title": "Registro de cambios",
-        "description": "Últimas actualizaciones y mejoras de OpenFarm",
+        "description": "Últimas actualizaciones y mejoras de AgriTech Africa",
         "unreleased": "Próximamente"
     },
     "detection": {
@@ -795,55 +822,55 @@
         "priorityLow": "Baja"
     },
     "seo": {
-        "title": "OpenFarm: plataforma de inteligencia de cultivos de código abierto",
+        "title": "AgriTech Africa: plataforma de inteligencia de cultivos de código abierto",
         "description": "Inteligencia de cultivos de código abierto: imágenes Sentinel-2, clima y suelo fusionados en información explicable por campo. Autoalojable, BSD-3-Clause, sin claves API.",
-        "longDescription": "OpenFarm es una plataforma de inteligencia de cultivos de código abierto. Fusiona imágenes satelitales Sentinel-2, clima diario y datos de suelo en información por campo, y muestra la evidencia detrás de cada alerta: qué índice se movió, en qué ventana y las condiciones que lo explican.",
+        "longDescription": "AgriTech Africa es una plataforma de inteligencia de cultivos de código abierto. Fusiona imágenes satelitales Sentinel-2, clima diario y datos de suelo en información por campo, y muestra la evidencia detrás de cada alerta: qué índice se movió, en qué ventana y las condiciones que lo explican.",
         "category": "Inteligencia de cultivos y teledetección",
         "featureList": "Índices de vegetación Sentinel-2 a 10 m | 24 meses de historial recuperados por campo | Historial climático diario y pronóstico de 7 días | Propiedades del suelo por profundidad hasta 200 cm | Alertas de anomalías explicadas | Detección de límites de campo desde imágenes | Autoalojamiento con Docker Compose | Multiusuario con roles",
         "ogHeadline": "Sabe qué está pasando en tu campo, y por qué",
         "ogSubhead": "Inteligencia de cultivos de código abierto: satélite, clima y suelo",
-        "ogAlt": "OpenFarm, inteligencia de cultivos de código abierto: satélite, clima y suelo",
+        "ogAlt": "AgriTech Africa, inteligencia de cultivos de código abierto: satélite, clima y suelo",
         "datasetDesc": {
-            "sentinel": "Imágenes ópticas multiespectrales de la misión Sentinel-2 de la Agencia Espacial Europea: 13 bandas de 10 a 60 m de resolución con revisita de cinco días en el ecuador. OpenFarm calcula NDVI, EVI, SAVI y NDWI por escena a partir de sus bandas roja, infrarroja cercana e infrarroja de onda corta, y recupera 24 meses de historial para cada límite de campo.",
-            "weather": "Historial y pronóstico meteorológico diario y horario agregado de servicios meteorológicos nacionales. OpenFarm lee temperatura, precipitación, evapotranspiración, viento y humedad del suelo, y deriva grados día de crecimiento, evapotranspiración de referencia, balance hídrico e índice de sequía para cada campo.",
-            "soil": "Mapas globales de propiedades del suelo estimados a 250 m de resolución a partir de observaciones de perfiles de suelo y covariables ambientales. OpenFarm lee textura, pH, carbono orgánico, capacidad de intercambio catiónico, densidad aparente y capacidad de agua disponible por capa de profundidad hasta 200 cm."
+            "sentinel": "Imágenes ópticas multiespectrales de la misión Sentinel-2 de la Agencia Espacial Europea: 13 bandas de 10 a 60 m de resolución con revisita de cinco días en el ecuador. AgriTech Africa calcula NDVI, EVI, SAVI y NDWI por escena a partir de sus bandas roja, infrarroja cercana e infrarroja de onda corta, y recupera 24 meses de historial para cada límite de campo.",
+            "weather": "Historial y pronóstico meteorológico diario y horario agregado de servicios meteorológicos nacionales. AgriTech Africa lee temperatura, precipitación, evapotranspiración, viento y humedad del suelo, y deriva grados día de crecimiento, evapotranspiración de referencia, balance hídrico e índice de sequía para cada campo.",
+            "soil": "Mapas globales de propiedades del suelo estimados a 250 m de resolución a partir de observaciones de perfiles de suelo y covariables ambientales. AgriTech Africa lee textura, pH, carbono orgánico, capacidad de intercambio catiónico, densidad aparente y capacidad de agua disponible por capa de profundidad hasta 200 cm."
         }
     },
     "faq": {
         "tag": "Preguntas",
         "title": "Respuestas antes de desplegar",
-        "desc": "Lo que la gente pregunta antes de ejecutar OpenFarm en sus propios campos.",
+        "desc": "Lo que la gente pregunta antes de ejecutar AgriTech Africa en sus propios campos.",
         "what": {
-            "q": "¿Qué es OpenFarm?",
-            "a": "OpenFarm es una plataforma de inteligencia de cultivos de código abierto. Fusiona imágenes satelitales Sentinel-2, clima diario y datos de suelo en información por campo, y muestra la evidencia detrás de cada alerta: qué índice se movió, en qué ventana y las condiciones que lo explican."
+            "q": "¿Qué es AgriTech Africa?",
+            "a": "AgriTech Africa es una plataforma de inteligencia de cultivos de código abierto. Fusiona imágenes satelitales Sentinel-2, clima diario y datos de suelo en información por campo, y muestra la evidencia detrás de cada alerta: qué índice se movió, en qué ventana y las condiciones que lo explican."
         },
         "stress": {
-            "q": "¿Cómo detecta OpenFarm el estrés del cultivo?",
-            "a": "Compara cada escena nueva con el historial del propio campo en lugar de un umbral fijo. Cuando un índice cae, OpenFarm revisa la lluvia, la evapotranspiración y el balance hídrico del suelo en la misma ventana, así la alerta indica si es estrés hídrico y no solo que algo cambió."
+            "q": "¿Cómo detecta AgriTech Africa el estrés del cultivo?",
+            "a": "Compara cada escena nueva con el historial del propio campo en lugar de un umbral fijo. Cuando un índice cae, AgriTech Africa revisa la lluvia, la evapotranspiración y el balance hídrico del suelo en la misma ventana, así la alerta indica si es estrés hídrico y no solo que algo cambió."
         },
         "satellite": {
-            "q": "¿Qué datos satelitales usa OpenFarm?",
-            "a": "Sentinel-2, la misión multiespectral de 10 m de la Agencia Espacial Europea, consultada mediante el catálogo público Element 84 Earth Search. OpenFarm calcula NDVI, EVI, SAVI y NDWI por escena, descarta las escenas con exceso de nubes y recupera 24 meses de historial al dibujar un límite."
+            "q": "¿Qué datos satelitales usa AgriTech Africa?",
+            "a": "Sentinel-2, la misión multiespectral de 10 m de la Agencia Espacial Europea, consultada mediante el catálogo público Element 84 Earth Search. AgriTech Africa calcula NDVI, EVI, SAVI y NDWI por escena, descarta las escenas con exceso de nubes y recupera 24 meses de historial al dibujar un límite."
         },
         "soil": {
-            "q": "¿Qué datos de suelo usa OpenFarm?",
+            "q": "¿Qué datos de suelo usa AgriTech Africa?",
             "a": "ISRIC SoilGrids aporta textura, pH, carbono orgánico, CIC y propiedades hidráulicas en todo el mundo a 250 m, y POLARIS aporta cobertura a 30 m en Estados Unidos. Ambos se obtienen automáticamente para cada capa hasta 200 cm en cuanto existe un límite de campo."
         },
         "free": {
-            "q": "¿OpenFarm es gratis?",
-            "a": "Sí. OpenFarm tiene licencia BSD-3-Clause, sin límite de usuarios, sin precio por hectárea y sin cuenta de proveedor. Ejecuta todo el stack por tu cuenta sin más coste que tu servidor, o prueba primero la demo. No hacen falta claves API de terceros, ni siquiera para el mapa base."
+            "q": "¿AgriTech Africa es gratis?",
+            "a": "Sí. AgriTech Africa tiene licencia BSD-3-Clause, sin límite de usuarios, sin precio por hectárea y sin cuenta de proveedor. Ejecuta todo el stack por tu cuenta sin más coste que tu servidor, o prueba primero la demo. No hacen falta claves API de terceros, ni siquiera para el mapa base."
         },
         "selfhost": {
-            "q": "¿Puedo alojar OpenFarm por mi cuenta?",
+            "q": "¿Puedo alojar AgriTech Africa por mi cuenta?",
             "a": "Sí, es la opción por defecto. Next.js, FastAPI, PostGIS, MinIO y TiTiler arrancan desde un único archivo Docker Compose en cualquier VPS, y Terraform puede aprovisionar la máquina. La demo funciona en una instancia gratuita de 2 OCPU y 12 GB, suficiente para todo el stack."
         },
         "crops": {
-            "q": "¿Qué cultivos admite OpenFarm?",
+            "q": "¿Qué cultivos admite AgriTech Africa?",
             "a": "Cereales, legumbres, oleaginosas, hortalizas, fibras y cultivos perennes incluyen un perfil de aptitud: rangos de temperatura, lluvia, pH, drenaje y salinidad evaluados contra el suelo y el clima reales de tu campo. Los perfiles son datos en el repositorio, así que añadir un cultivo es un pull request."
         },
         "updates": {
             "q": "¿Con qué frecuencia se actualizan los datos?",
-            "a": "Sentinel-2 revisita la mayoría de los campos cada pocos días y OpenFarm recalcula los índices cada semana con la escena utilizable más reciente. El clima se actualiza a diario junto con un pronóstico de 7 días. El suelo se obtiene una vez por campo, porque cambia en décadas, no en semanas."
+            "a": "Sentinel-2 revisita la mayoría de los campos cada pocos días y AgriTech Africa recalcula los índices cada semana con la escena utilizable más reciente. El clima se actualiza a diario junto con un pronóstico de 7 días. El suelo se obtiene una vez por campo, porque cambia en décadas, no en semanas."
         }
     },
     "alertRules": {

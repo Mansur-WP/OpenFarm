@@ -34,17 +34,17 @@
     --border: 150 10% 90%;
     --border-strong: 150 9% 78%;
     --input: 150 10% 90%;
-    --ring: 142 76% 36%;
+    --ring: 145 58% 30%;
 
     /* ── Brand ─────────────────────────────────────────────────────── */
-    --primary: 142 76% 36%;
+    --primary: 145 58% 30%;
     --primary-foreground: 150 80% 98%;
-    --primary-subtle: 142 60% 95%;   /* tint backgrounds, active nav    */
-    --primary-border: 142 50% 82%;
+    --primary-subtle: 145 45% 94%;   /* tint backgrounds, active nav    */
+    --primary-border: 145 38% 80%;
 
     /* ── Semantic status ───────────────────────────────────────────── */
-    --success: 142 72% 32%;
-    --success-subtle: 142 60% 95%;
+    --success: 145 58% 30%;
+    --success-subtle: 145 45% 94%;
     --warning: 32 95% 44%;
     --warning-subtle: 38 92% 95%;
     --caution: 45 93% 40%;

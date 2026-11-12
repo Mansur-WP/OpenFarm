@@ -203,7 +203,7 @@ export async function renderOgCard(locale: string) {
                             <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
                         </svg>
                         <div style={{ display: "flex", fontSize: 38, fontWeight: 700, color: FOREGROUND }}>
-                            OpenFarm
+                            AgriTech Africa
                         </div>
                     </div>
 
